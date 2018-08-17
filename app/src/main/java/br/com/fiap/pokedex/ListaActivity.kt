@@ -5,16 +5,25 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import br.com.fiap.pokedex.api.getPokemonApi
 import br.com.fiap.pokedex.model.Pokemon
+import br.com.fiap.pokedex.model.PokemonResponse
 import kotlinx.android.synthetic.main.activity_lista.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ListaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista)
+        carregaPokemons()
+    }
+
+    private fun exibeNaLista(pokemons: List<Pokemon>) {
         rvPokemons.adapter = ListaPokemonAdapter(
-                listaPokemons(),
+                pokemons,
                 this, {
             Toast.makeText(this,
                     it.nome, Toast.LENGTH_LONG).show()
@@ -23,19 +32,20 @@ class ListaActivity : AppCompatActivity() {
         rvPokemons.layoutManager = layoutManager
     }
 
-    private fun listaPokemons(): List<Pokemon> {
-        return listOf(
-                getMewtwo(),
-                getMewtwo(),
-                getMewtwo(),
-                getMewtwo(),
-                getMewtwo()
-        )
-    }
+    private fun carregaPokemons() {
+        getPokemonApi()
+                .todosPokemons(150)
+                .enqueue(object : Callback<PokemonResponse>{
+                    override fun onFailure(call: Call<PokemonResponse>?, t: Throwable?) {
 
-    private fun getMewtwo(): Pokemon {
-        return Pokemon(150, "Mewtwo", "Genetic",
-                "Bla bla bla",
-                ContextCompat.getDrawable(this, R.drawable.mewtwo)!!)
+                    }
+
+                    override fun onResponse(call: Call<PokemonResponse>?, response: Response<PokemonResponse>?) {
+                        if(response!!.isSuccessful) {
+                            exibeNaLista(response.body()!!.content)
+                        }
+                    }
+                })
+
     }
 }
