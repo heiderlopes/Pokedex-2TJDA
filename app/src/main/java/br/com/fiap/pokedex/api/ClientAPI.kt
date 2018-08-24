@@ -1,6 +1,9 @@
 package br.com.fiap.pokedex.api
 
+import android.content.Context
 import android.util.Log
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -11,14 +14,8 @@ import java.util.concurrent.TimeUnit
 class ClientApi<T> {
 
     fun getClient(c: Class<T>): T {
-        val builder = OkHttpClient.Builder()
-                .addInterceptor(AuthInterceptor())
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-
-        val retrofit = Retrofit.Builder()
-                .client(builder.build())
+       val retrofit = Retrofit.Builder()
+                .client(getOkhttpClientAuth().build())
                 .baseUrl("https://pokedexdx.herokuapp.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -26,6 +23,27 @@ class ClientApi<T> {
         return retrofit.create(c)
     }
 
+}
+
+private var picasso: Picasso? = null
+
+fun getPicassoAuth(context: Context): Picasso {
+    if(picasso == null) {
+        picasso = Picasso
+                .Builder(context)
+                .downloader(OkHttp3Downloader(getOkhttpClientAuth().build()))
+                .build()
+    }
+    return picasso!!
+
+}
+
+fun getOkhttpClientAuth(): OkHttpClient.Builder {
+    return  OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor())
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
 }
 
 class AuthInterceptor : Interceptor {

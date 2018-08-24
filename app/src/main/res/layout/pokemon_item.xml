@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/ivPokemon"
@@ -15,33 +15,24 @@
             android:layout_height="96dp"
             android:src="@drawable/mewtwo" />
 
-        <LinearLayout
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tvNumeroPokemon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvNomePokemon"
-                style="@style/label"
-                android:text="Mewtwo"/>
+            android:text="150"
+            android:textColor="#ccc"
+            android:textSize="10sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvTipoPokemon"
-                android:textColor="#ccc"
-                android:textSize="10sp"
-                android:text="Genetic"/>
+        <TextView
+            android:id="@+id/tvNomePokemon"
+            style="@style/label"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mewtwo" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvDescricaoPokemon"
-                android:maxLines="3"/>
 
-        </LinearLayout>
 
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

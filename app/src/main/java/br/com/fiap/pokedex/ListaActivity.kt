@@ -3,6 +3,7 @@ package br.com.fiap.pokedex
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import br.com.fiap.pokedex.api.getPokemonApi
@@ -28,7 +29,10 @@ class ListaActivity : AppCompatActivity() {
             Toast.makeText(this,
                     it.nome, Toast.LENGTH_LONG).show()
         })
-        val layoutManager = LinearLayoutManager(this)
+
+        //val layoutManager = LinearLayoutManager(this)
+        val layoutManager = GridLayoutManager(this, 3)
+
         rvPokemons.layoutManager = layoutManager
     }
 
